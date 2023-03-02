@@ -6,10 +6,15 @@ using System.Threading.Tasks;
 
 namespace AddressBook
 {
+   
     public class AddressBook
     {
+
         //list to create multiple contacts
-        public static List<Contact> addressBook = new List<Contact>();
+        public List<Contact> addressBook= new List<Contact>();
+
+        public static Dictionary<string, List<Contact>> addressBookCollection = new Dictionary<string, List<Contact>>();
+
         public void AddContact()
         {
             Console.WriteLine("Enter first name :");
@@ -36,9 +41,17 @@ namespace AddressBook
             Console.WriteLine("Enter email : ");
             string email = Console.ReadLine();
 
-            Contact newCcontact = new Contact(firstName, lastName, address, city, state, pincode, phone, email);
-            addressBook.Add(newCcontact);
+            Contact newContact = new Contact(firstName, lastName, address, city, state, pincode, phone, email);
+            addressBook.Add(newContact);
+            
 
+        }
+        public void displayContacts()
+        {
+            foreach(Contact contact in addressBook)
+            {
+                Console.WriteLine(contact.firstName);
+            }
         }
         public void EditContact(string firstname, string lastname)
         {
@@ -98,5 +111,60 @@ namespace AddressBook
             }
             
         }
+        public void askUser()
+        {
+            Console.WriteLine("Select an option");
+            Console.WriteLine("1.Add Contact");
+            Console.WriteLine("2.Edit Contact");
+            Console.WriteLine("3.Delete");
+
+            int choice = Convert.ToInt32(Console.ReadLine());
+            switch (choice)
+            {
+                case 1:
+
+                    this.AddContact();
+                    askUser();
+                    break;
+                case 2:
+                    Console.WriteLine("Enter the first name and last name of the contact to edit");
+                    string firstname = Console.ReadLine();
+                    string lastname = Console.ReadLine();
+                    this.EditContact(firstname, lastname);
+                    this.askUser();
+                    break;
+                case 3:
+                    Console.WriteLine("Enter the first name and last name of the contact to delete");
+                    string fname = Console.ReadLine();
+                    string lname = Console.ReadLine();
+                    this.DeleteContact(fname, lname);
+                    this.askUser();
+                    break;
+                case 4:
+                    this.displayContacts();
+                    this.askUser();
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        public static void addMultipleAddressBooks(AddressBook book)
+        {
+            Console.WriteLine("Enter the name of the Address Book");
+
+            string name = Console.ReadLine();
+
+            book.askUser();
+            if (!addressBookCollection.ContainsKey(name))
+            {
+                addressBookCollection.Add(name, book.addressBook);
+            }
+
+        }
+
+
+
     }
+    
 }

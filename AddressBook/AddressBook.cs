@@ -36,21 +36,21 @@ namespace AddressBook
             Console.WriteLine("Enter email : ");
             string email = Console.ReadLine();
 
-             Contact newCcontact = new Contact(firstName, lastName, address, city, state, pincode, phone, email);
+            Contact newCcontact = new Contact(firstName, lastName, address, city, state, pincode, phone, email);
             addressBook.Add(newCcontact);
 
         }
-        public void EditContact(string firstname,string lastname)
+        public void EditContact(string firstname, string lastname)
         {
-            
-              
-            foreach(Contact contact in addressBook)
+
+
+            foreach (Contact contact in addressBook)
             {
-                if(contact.firstName==firstname && contact.lastName==lastname)
+                if (contact.firstName == firstname && contact.lastName == lastname)
                 {
                     Console.WriteLine("Choose a field which you want to edit");
                     Console.WriteLine("1.Name \n2.Address \n3.Phone Number \n4.Email");
-                    int editField=Convert.ToInt32(Console.ReadLine());
+                    int editField = Convert.ToInt32(Console.ReadLine());
                     switch (editField)
                     {
                         case 1:
@@ -83,6 +83,20 @@ namespace AddressBook
                     Console.WriteLine("Contact updated successfully!");
                 }
             }
+        }
+        public void DeleteContact(string firstname, string lastname)
+        {
+
+            foreach (Contact contact in addressBook)
+            {
+                if (contact.firstName == firstname && contact.lastName == lastname)
+                {
+                    addressBook.Remove(contact);
+                    Console.WriteLine("Deleted successfully");
+                    break;
+                }
+            }
+            
         }
     }
 }

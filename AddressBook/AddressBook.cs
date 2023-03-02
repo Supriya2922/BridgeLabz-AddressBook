@@ -8,18 +8,33 @@ namespace AddressBook
 {
     public class AddressBook
     {
-        public void CreateContact()
+        public void AddContact()
         {
-            string firstName = "Supriya";
-            string lastName = "P";
-            string address = "Halasuru";
-            string city = "Bangalore";
-            string state = "Karnataka";
-            long pincode = 560008;
-            long phone = 8765423232;
-            string email = "ssu@gmail.com";
-            Contact contact = new Contact(firstName, lastName, address, city, state, pincode, phone, email);
+            Console.WriteLine("Enter first name :");
+            string firstName = Console.ReadLine();
 
+            Console.WriteLine("Enter last name :");
+            string lastName = Console.ReadLine();
+
+            Console.WriteLine("Enter address :");
+            string address = Console.ReadLine();
+
+            Console.WriteLine("Enter city :");
+            string city = Console.ReadLine();
+
+            Console.WriteLine("Enter state :");
+            string state = Console.ReadLine();
+
+            Console.WriteLine("Enter pincode :");
+            long pincode = Convert.ToInt64(Console.ReadLine());
+
+            Console.WriteLine("Enter phone number :");
+            long phone = Convert.ToInt64(Console.ReadLine());
+
+            Console.WriteLine("Enter email : ");
+            string email = Console.ReadLine();
+
+            Contact newContact = new Contact(firstName, lastName, address, city, state, pincode, phone, email);
 
         }
     }

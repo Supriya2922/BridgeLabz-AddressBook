@@ -12,8 +12,8 @@ namespace AddressBook
 
         //list to create multiple contacts
         public List<Contact> addressBook= new List<Contact>();
-
         public static Dictionary<string, List<Contact>> addressBookCollection = new Dictionary<string, List<Contact>>();
+        
 
         public void AddContact()
         {
@@ -46,6 +46,8 @@ namespace AddressBook
                 if(!addressBook.Any(contact => contact.Equals(newContact)))
                 {
                     addressBook.Add(newContact);
+               
+                
                 }
                 else
                 {
@@ -58,7 +60,15 @@ namespace AddressBook
         {
             foreach(Contact contact in addressBook)
             {
-                Console.WriteLine(contact.firstName);
+                Console.WriteLine("First Name :"+contact.firstName);
+                Console.WriteLine("Last Name :" + contact.lastName);
+                Console.WriteLine("Address :" + contact.address);
+                Console.WriteLine("City :" + contact.city);
+                Console.WriteLine("State :" + contact.state);
+                Console.WriteLine("ZipCode :" + contact.zipcode);
+                Console.WriteLine("Phone number :" + contact.phone);
+                Console.WriteLine(" Email:" + contact.email);
+                Console.WriteLine("--------------------------------");
             }
         }
         public void EditContact(string firstname, string lastname)
@@ -173,9 +183,36 @@ namespace AddressBook
             }
 
         }
+        public static void searchPersonAcrossMultipleAddressBooks()
+        {
+            Console.WriteLine("Enter the city to be searched in");
+            string searchCity=Console.ReadLine();
+            Console.WriteLine("Enter the state to be searched in");
+            string searchState=Console.ReadLine();
+           List< List<Contact>> contacts = new List<List<Contact>>();
+            foreach(string book in addressBookCollection.Keys)
+            {
+                 var contact=addressBookCollection[book];
+                contacts.Add(contact);
+                
+            }
+            Console.WriteLine("Contact names present in the city are:");
+            
+            foreach (var contact in contacts)
+            {
 
+                var personlist = contact.Where(x => x.city == searchCity && x.state == searchState);
+                var names=personlist.Select(x=>x.firstName).ToList();
+                   
+                foreach(var n in names)
+                {
+                    Console.WriteLine(n);
+                }
+                }
+            }
+        }
 
 
     }
     
-}
+

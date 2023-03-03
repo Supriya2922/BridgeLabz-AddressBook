@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -283,6 +284,38 @@ namespace AddressBook
 
 
             }
+
+            
+        }
+        public static void CountByCityOrState()
+        {
+            List<List<Contact>> addressBooks = new List<List<Contact>>();
+            foreach (string book in addressBookCollection.Keys)
+            {
+                var contact = addressBookCollection[book];
+                addressBooks.Add(contact);
+
+            }
+            Console.WriteLine("\nCount of contacts in each city and state are:");
+           foreach(var contacts in addressBooks)
+            {
+                var cityGroup=contacts.GroupBy(x=> x.city);
+                var stateGroup=contacts.GroupBy(x=> x.state);
+                Console.WriteLine("\nCity    Count");
+                foreach (var group in cityGroup)
+                {
+                    Console.WriteLine("{0}       {1}", group.Key, group.Count());
+                }
+                Console.WriteLine("\nState   Count");
+                foreach (var group in stateGroup)
+                {
+                    Console.WriteLine("{0}       {1}", group.Key, group.Count());
+                }
+
+            }
+
+           
+
         }
     }
 }

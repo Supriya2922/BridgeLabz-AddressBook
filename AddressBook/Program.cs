@@ -11,7 +11,8 @@
                 Console.WriteLine("2.Search for contact across multiple address books");
                 Console.WriteLine("3.View Contacts by city or state");
                 Console.WriteLine("4.Count by city or state");
-                Console.WriteLine("5.Exit");
+                Console.WriteLine("5.Sort entries alphbetically");
+                Console.WriteLine("6.Exit");
                 int choice = Convert.ToInt32(Console.ReadLine());
                 switch (choice)
                 {
@@ -34,6 +35,9 @@
                         AddressBook.CountByCityOrState();
                         break;
                     case 5:
+                        AddressBook.SortByName();
+                        break;
+                    case 6:
                         Environment.Exit(0);
                         break;
                 }

@@ -317,6 +317,19 @@ namespace AddressBook
            
 
         }
+        public static void SortByName()
+        {
+            List<Contact> addressBooks = new List<Contact>();
+            foreach (string book in addressBookCollection.Keys)
+            {
+                addressBooks = addressBookCollection[book];
+            }
+            addressBooks.Sort((person1,person2)=>person1.firstName.CompareTo(person2.firstName));
+            foreach(var contact in addressBooks)
+            {
+                Console.WriteLine(contact.ToString());
+            }
+        }
     }
 }
         

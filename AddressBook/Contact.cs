@@ -36,7 +36,7 @@ namespace AddressBook
         }
        public override string ToString()
         {
-            string res = $"\n\n Name : {this.firstName} {this.lastName} \nAddress :{this.address}\nCity :{this.city}\nState :{this.state}\nZipcode :{this.zipcode}\nPhone Number :{this.phone}\nEmail :{this.email}";
+            string res = $"\n\nName : {this.firstName} {this.lastName} \nAddress :{this.address}\nCity :{this.city}\nState :{this.state}\nZipcode :{this.zipcode}\nPhone Number :{this.phone}\nEmail :{this.email}";
             return res;
         }
     }

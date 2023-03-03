@@ -12,7 +12,8 @@
                 Console.WriteLine("3.View Contacts by city or state");
                 Console.WriteLine("4.Count by city or state");
                 Console.WriteLine("5.Sort entries alphbetically");
-                Console.WriteLine("6.Exit");
+                Console.WriteLine("6.Sort entries according to zip,state,city");
+                Console.WriteLine("7.Exit");
                 int choice = Convert.ToInt32(Console.ReadLine());
                 switch (choice)
                 {
@@ -38,6 +39,9 @@
                         AddressBook.SortByName();
                         break;
                     case 6:
+                        AddressBook.SortByCityStateZip();
+                        break;
+                    case 7:
                         Environment.Exit(0);
                         break;
                 }

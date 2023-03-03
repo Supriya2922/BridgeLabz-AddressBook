@@ -317,6 +317,30 @@ namespace AddressBook
            
 
         }
+        public static void SortByParameter(string parameter)
+        {
+            List<Contact> addressBooks = new List<Contact>();
+            foreach (string book in addressBookCollection.Keys)
+            {
+                addressBooks = addressBookCollection[book];
+            }
+            if(parameter == "city") {
+                addressBooks.Sort((person1, person2) => person1.city.CompareTo(person2.city));
+            }
+            else if(parameter=="state")
+            {
+                addressBooks.Sort((person1, person2) => person1.state.CompareTo(person2.state));
+            }
+            else
+            {
+                addressBooks.Sort((person1, person2) => person1.zipcode.CompareTo(person2.zipcode));
+            }
+            Console.WriteLine("Contacts sorted  according to "+parameter);
+            foreach (var contact in addressBooks)
+            {
+                Console.WriteLine(contact.ToString());
+            }
+        }
         public static void SortByName()
         {
             List<Contact> addressBooks = new List<Contact>();
@@ -325,9 +349,28 @@ namespace AddressBook
                 addressBooks = addressBookCollection[book];
             }
             addressBooks.Sort((person1,person2)=>person1.firstName.CompareTo(person2.firstName));
+            Console.WriteLine("Contacts sorted alphabetically according to First name");
             foreach(var contact in addressBooks)
             {
                 Console.WriteLine(contact.ToString());
+            }
+        }
+        public static void SortByCityStateZip()
+        {
+            Console.WriteLine("Enter the parameter to be ");
+            Console.WriteLine("\n1.City\n2.State\n3.Zip\n4.Exit");
+            int choice = Convert.ToInt32(Console.ReadLine());
+            switch (choice)
+            {
+                case 1:
+                    SortByParameter("city");
+                    break;
+                case 2:
+                    SortByParameter("state");
+                    break;
+                case 3:
+                    SortByParameter("zip");
+                    break;
             }
         }
     }

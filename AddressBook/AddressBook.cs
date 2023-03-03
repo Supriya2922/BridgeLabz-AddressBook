@@ -42,10 +42,18 @@ namespace AddressBook
             string email = Console.ReadLine();
 
             Contact newContact = new Contact(firstName, lastName, address, city, state, pincode, phone, email);
-            addressBook.Add(newContact);
+          
+                if(!addressBook.Any(contact => contact.Equals(newContact)))
+                {
+                    addressBook.Add(newContact);
+                }
+                else
+                {
+                    Console.WriteLine("Contact already exists with the same name");
+                }
             
-
         }
+       
         public void displayContacts()
         {
             foreach(Contact contact in addressBook)
@@ -91,6 +99,7 @@ namespace AddressBook
                             Console.WriteLine("Enter new email id :");
                             contact.email = Console.ReadLine();
                             break;
+                        
 
                     }
                     Console.WriteLine("Contact updated successfully!");
@@ -117,6 +126,8 @@ namespace AddressBook
             Console.WriteLine("1.Add Contact");
             Console.WriteLine("2.Edit Contact");
             Console.WriteLine("3.Delete");
+            Console.WriteLine("4.Display ");
+            Console.WriteLine("5.Exit");
 
             int choice = Convert.ToInt32(Console.ReadLine());
             switch (choice)

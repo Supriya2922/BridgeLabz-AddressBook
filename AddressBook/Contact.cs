@@ -28,5 +28,11 @@ namespace AddressBook
             this.phone = phone;
             this.email = email;
         }
+        public override bool Equals(Object obj)
+        {
+            if (obj == null) return false;
+            if (!(obj is Contact)) return false;
+            return (this.firstName == ((Contact)obj).firstName) && (this.lastName == ((Contact)obj).lastName);
+        }
     }
 }

@@ -6,15 +6,16 @@
         {
             while (true)
             {
-                Console.WriteLine("Select option:");
+                Console.WriteLine("\nSelect option:");
                 Console.WriteLine("1.Add address book");
                 Console.WriteLine("2.Search for contact across multiple address books");
-                Console.WriteLine("3.Exit");
+                Console.WriteLine("3.View Contacts by city or state");
+                Console.WriteLine("4.Exit");
                 int choice = Convert.ToInt32(Console.ReadLine());
                 switch (choice)
                 {
                     case 1:
-                        Console.WriteLine("Enter the number of address books that you want to add.");
+                        Console.WriteLine("\nEnter the number of address books that you want to add.");
                         int n = Convert.ToInt32(Console.ReadLine());
                         for (int i = 0; i < n; i++)
                         {
@@ -26,6 +27,9 @@
                         AddressBook.searchPersonAcrossMultipleAddressBooks();
                         break;
                     case 3:
+                        AddressBook.ViewPersonByStateOrCity();
+                        break;
+                    case 4:
                         Environment.Exit(0);
                         break;
                 }

@@ -13,7 +13,7 @@ using Newtonsoft.Json;
 namespace AddressBook
 {
 
-    public class AddressBook
+    public class AddressBookClass
     {
         public static string file = @"D:\BridgeLabz_AddressBook\BridgeLabz-AddressBook\AddressBook\EmployeeDetails.txt";
       
@@ -24,6 +24,21 @@ namespace AddressBook
         public static Dictionary<string, List<Contact>> cityDict = new Dictionary<string, List<Contact>>();
         public static Dictionary<string, List<Contact>> stateDict = new Dictionary<string, List<Contact>>();
 
+        public  bool AddContactTest(Contact newContact)
+        {
+            if (!addressBook.Any(contact => contact.Equals(newContact)))
+            {
+                addressBook.Add(newContact);
+               
+                return true;
+
+            }
+            else
+            {
+                Console.WriteLine("Contact already exists with the same name");
+            }
+            return false;
+        }
         public void AddContact()
         {
 
@@ -58,12 +73,13 @@ namespace AddressBook
                 addressBook.Add(newContact);
                 string text = $" \nFirst Name: {newContact.firstName}\n Last Name:{newContact.lastName}\nAdress:{newContact.address}\nCity:{newContact.city}\nState:{newContact.state}\nZipCode:{newContact.zipcode}\nPhone number:{newContact.phone}\nEmail:{newContact.email}\n\n";
                 File.AppendAllText(file, text ,Encoding.UTF8);
+                
             }
             else
             {
                 Console.WriteLine("Contact already exists with the same name");
             }
-
+            
         }
 
         public void displayContacts()
@@ -80,6 +96,17 @@ namespace AddressBook
                 Console.WriteLine("Email:" + contact.email);
                 Console.WriteLine("--------------------------------");
             }
+        }
+        public bool EditContactTest(string firstname, string lastname)
+        {
+            foreach (Contact contact in addressBook)
+            {
+                if (contact.firstName == firstname && contact.lastName == lastname)
+                {
+                    return true;
+                }
+            }
+            return false;
         }
         public void EditContact(string firstname, string lastname)
         {
@@ -123,10 +150,13 @@ namespace AddressBook
 
                     }
                     Console.WriteLine("Contact updated successfully!");
+                   
                 }
+               
             }
+           
         }
-        public void DeleteContact(string firstname, string lastname)
+        public bool DeleteContact(string firstname, string lastname)
         {
 
             foreach (Contact contact in addressBook)
@@ -135,13 +165,14 @@ namespace AddressBook
                 {
                     addressBook.Remove(contact);
                     Console.WriteLine("Deleted successfully");
-                    break;
+                    return true;
                 }
                 else
                 {
                     Console.WriteLine("Contact not found");
                 }
             }
+            return false;
 
         }
         public void ContactOperations()
@@ -184,7 +215,7 @@ namespace AddressBook
             }
         }
 
-        public static void addMultipleAddressBooks(AddressBook book)
+        public static void addMultipleAddressBooks(AddressBookClass book)
         {
             Console.WriteLine("Enter the name of the Address Book");
             string name = Console.ReadLine();
@@ -196,6 +227,33 @@ namespace AddressBook
                 addressBookCollection.Add(name, book.addressBook);
             }
 
+        }
+        public bool searchPersonTest(string city,string state)
+        {
+            List<List<Contact>> contacts = new List<List<Contact>>();
+            foreach (string book in addressBookCollection.Keys)
+            {
+                var contact = addressBookCollection[book];
+                contacts.Add(contact);
+
+            }
+            
+
+            foreach (var contact in contacts)
+            {
+
+                var personlist = contact.Where(x => x.city == city && x.state == state);
+                var names = personlist.Select(x => x.firstName).ToList();
+                if (names.Count == 0)
+                {
+                    return false;
+                }
+                foreach (var name in names)
+                {
+                    Console.WriteLine(name);
+                }
+            }
+            return true;
         }
         public static void searchPersonAcrossMultipleAddressBooks()
         {
@@ -217,12 +275,13 @@ namespace AddressBook
 
                 var personlist = contact.Where(x => x.city == searchCity && x.state == searchState);
                 var names = personlist.Select(x => x.firstName).ToList();
-
+               
                 foreach (var name in names)
                 {
                     Console.WriteLine(name);
                 }
             }
+           
         }
         public static void ViewPersonByStateOrCity()
         {
@@ -306,20 +365,20 @@ namespace AddressBook
 
             }
 
-            Console.WriteLine("\nCount of contacts in each city and state are:");
+             Console.WriteLine("\nCount of contacts in each city and state are:");
          
-                var cityGroup=addressBooks.GroupBy(x=> x.city);
-                var stateGroup=addressBooks.GroupBy(x=> x.state);
-                Console.WriteLine("\nCity    Count");
-                foreach (var group in cityGroup)
-                {
+             var cityGroup=addressBooks.GroupBy(x=> x.city);
+             var stateGroup=addressBooks.GroupBy(x=> x.state);
+             Console.WriteLine("\nCity    Count");
+             foreach (var group in cityGroup)
+             {
+                 Console.WriteLine("{0}       {1}", group.Key, group.Count());
+             }
+              Console.WriteLine("\nState   Count");
+              foreach (var group in stateGroup)
+              {
                     Console.WriteLine("{0}       {1}", group.Key, group.Count());
-                }
-                Console.WriteLine("\nState   Count");
-                foreach (var group in stateGroup)
-                {
-                    Console.WriteLine("{0}       {1}", group.Key, group.Count());
-                }
+              }
 
             
 
@@ -365,19 +424,18 @@ namespace AddressBook
             }
            
                 addressBooks.Sort((person1, person2) => person1.firstName.CompareTo(person2.firstName));
-            
-            
             Console.WriteLine("Contacts sorted alphabetically according to First name");
             
             foreach(var contact in addressBooks)
             {
                 Console.WriteLine(contact.ToString());
             }
+           
         }
         public static void SortByCityStateZip()
         {
             Console.WriteLine("Enter the parameter to be ");
-            Console.WriteLine("\n1.City\n2.State\n3.Zip\n4.Exit");
+            Console.WriteLine("\n1.City\n2.State\n3.Zip\n");
             int choice = Convert.ToInt32(Console.ReadLine());
             switch (choice)
             {
@@ -415,11 +473,13 @@ namespace AddressBook
                         Textfile.Close();
 
                     }
+                  
                     break;
                     case 2:
                     this.AddContact();
                     break;
             }
+           
            
         }
         public void CSVFileIO()

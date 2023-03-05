@@ -1,9 +1,19 @@
-﻿namespace AddressBook
+﻿using System.Configuration;
+using System.Data;
+using System.Data.SqlClient;
+namespace AddressBook
 {
-    internal class Program
+    public class Program
     {
         static void Main(string[] args)
         {
+            String connString;
+            connString = ConfigurationManager.ConnectionStrings["DbConn"].ConnectionString;
+            SqlConnection sqlConnection = new SqlConnection(connString);
+            //Command object
+            SqlCommand cmd = new SqlCommand();
+
+            cmd.Connection = sqlConnection;
             while (true)
             {
                 Console.WriteLine("\nSelect option:");
@@ -16,7 +26,7 @@
                 Console.WriteLine("7.Read or Write Contacts using File IO");
                 Console.WriteLine("8.Read or Write Contacts using CSV Helper");
                 Console.WriteLine("9.Read or Write Contacts using JSON");
-                AddressBook book= new AddressBook();
+                AddressBookClass book= new AddressBookClass();
                 int choice = Convert.ToInt32(Console.ReadLine());
                 switch (choice)
                 {
@@ -25,24 +35,24 @@
                         int n = Convert.ToInt32(Console.ReadLine());
                         for (int i = 0; i < n; i++)
                         {
-                            AddressBook addressBook = new AddressBook();
-                            AddressBook.addMultipleAddressBooks(addressBook);
+                            AddressBookClass addressBook = new AddressBookClass();
+                            AddressBookClass.addMultipleAddressBooks(addressBook);
                         }
                         break;
                     case 2:
-                        AddressBook.searchPersonAcrossMultipleAddressBooks();
+                        AddressBookClass.searchPersonAcrossMultipleAddressBooks();
                         break;
                     case 3:
-                        AddressBook.ViewPersonByStateOrCity();
+                        AddressBookClass.ViewPersonByStateOrCity();
                         break;
                     case 4:
-                        AddressBook.CountByCityOrState();
+                        AddressBookClass.CountByCityOrState();
                         break;
                     case 5:
-                        AddressBook.SortByName();
+                        AddressBookClass.SortByName();
                         break;
                     case 6:
-                        AddressBook.SortByCityStateZip();
+                        AddressBookClass.SortByCityStateZip();
                         break;
                     case 7:
                        
@@ -52,7 +62,7 @@
                         book.CSVFileIO();
                         break;
                     case 9:
-                        AddressBook addressBook1 = new AddressBook();
+                        AddressBookClass addressBook1 = new AddressBookClass();
                         addressBook1.JsonFileIO(); break;
                     case 11:
                         Environment.Exit(0);

@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using static System.Net.Mime.MediaTypeNames;
 using CsvHelper;
 using System.Globalization;
+using Newtonsoft.Json;
 
 namespace AddressBook
 {
@@ -296,18 +297,19 @@ namespace AddressBook
         }
         public static void CountByCityOrState()
         {
-            List<List<Contact>> addressBooks = new List<List<Contact>>();
+            List<Contact> addressBooks = new List<Contact>();
             foreach (string book in addressBookCollection.Keys)
             {
                 var contact = addressBookCollection[book];
-                addressBooks.Add(contact);
+                foreach (var c in contact)
+                    addressBooks.Add(c);
 
             }
+
             Console.WriteLine("\nCount of contacts in each city and state are:");
-           foreach(var contacts in addressBooks)
-            {
-                var cityGroup=contacts.GroupBy(x=> x.city);
-                var stateGroup=contacts.GroupBy(x=> x.state);
+         
+                var cityGroup=addressBooks.GroupBy(x=> x.city);
+                var stateGroup=addressBooks.GroupBy(x=> x.state);
                 Console.WriteLine("\nCity    Count");
                 foreach (var group in cityGroup)
                 {
@@ -319,7 +321,7 @@ namespace AddressBook
                     Console.WriteLine("{0}       {1}", group.Key, group.Count());
                 }
 
-            }
+            
 
            
 
@@ -329,9 +331,12 @@ namespace AddressBook
             List<Contact> addressBooks = new List<Contact>();
             foreach (string book in addressBookCollection.Keys)
             {
-                addressBooks = addressBookCollection[book];
+                var contact = addressBookCollection[book];
+                foreach (var c in contact)
+                    addressBooks.Add(c);
+
             }
-            if(parameter == "city") {
+            if (parameter == "city") {
                 addressBooks.Sort((person1, person2) => person1.city.CompareTo(person2.city));
             }
             else if(parameter=="state")
@@ -353,10 +358,17 @@ namespace AddressBook
             List<Contact> addressBooks = new List<Contact>();
             foreach (string book in addressBookCollection.Keys)
             {
-                addressBooks = addressBookCollection[book];
+                var contact = addressBookCollection[book];
+                foreach(var c in contact)
+                    addressBooks.Add(c);
+
             }
-            addressBooks.Sort((person1,person2)=>person1.firstName.CompareTo(person2.firstName));
+           
+                addressBooks.Sort((person1, person2) => person1.firstName.CompareTo(person2.firstName));
+            
+            
             Console.WriteLine("Contacts sorted alphabetically according to First name");
+            
             foreach(var contact in addressBooks)
             {
                 Console.WriteLine(contact.ToString());
@@ -465,6 +477,57 @@ namespace AddressBook
                     writer.Dispose();
                     break;
             }
+
+        }
+        public void JsonFileIO()
+        {
+            Console.WriteLine("\nDo you want to Read / Write the file?");
+            Console.WriteLine("1.Read");
+            Console.WriteLine("2.Write");
+            int choice = Convert.ToInt32(Console.ReadLine());
+
+            switch (choice)
+            {
+                case 1:
+                    var reader = File.ReadAllText("D:\\BridgeLabz_AddressBook\\BridgeLabz-AddressBook\\AddressBook\\EmployeeDetails.json");
+                    var dict=JsonConvert.DeserializeObject<Dictionary<string,List<Contact>>>(reader);
+                    foreach(var (key,val) in dict)
+                    {
+                        Console.WriteLine(key);
+                        foreach(var v in val)
+                        {
+                            Console.WriteLine(v.firstName);
+                            Console.WriteLine(v.lastName);
+                            Console.WriteLine(v.address);
+                            Console.WriteLine(v.city);
+                            Console.WriteLine(v.state);
+                            Console.WriteLine(v.zipcode);
+                            Console.WriteLine(v.phone);
+                            Console.WriteLine(v.email);
+                            Console.WriteLine();
+                        }
+                    }
+                    break;
+                    case 2:
+                    Console.WriteLine("Enter name of the address book:");
+                    string name=Console.ReadLine();
+                    string fileloc = "D:\\BridgeLabz_AddressBook\\BridgeLabz-AddressBook\\AddressBook\\EmployeeDetails.json";
+                    this.AddContact();
+                    if (addressBookCollection.ContainsKey(name))
+                    {
+
+                        addressBookCollection[name] = this.addressBook;
+                    }
+                    else
+                    {
+                        addressBookCollection.Add(name, this.addressBook);
+                    }
+                    var json = JsonConvert.SerializeObject(addressBookCollection);
+                    File.WriteAllText(fileloc, json);
+                    break;
+            }
+           
+           
         }
     }
 }

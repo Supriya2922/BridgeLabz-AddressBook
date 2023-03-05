@@ -14,6 +14,8 @@
                 Console.WriteLine("5.Sort entries alphbetically");
                 Console.WriteLine("6.Sort entries according to zip,state,city");
                 Console.WriteLine("7.Read or Write Contacts using File IO");
+                Console.WriteLine("8.Read or Write Contacts using CSV Helper");
+                Console.WriteLine("9.Read or Write Contacts using JSON");
                 AddressBook book= new AddressBook();
                 int choice = Convert.ToInt32(Console.ReadLine());
                 switch (choice)
@@ -50,6 +52,9 @@
                         book.CSVFileIO();
                         break;
                     case 9:
+                        AddressBook addressBook1 = new AddressBook();
+                        addressBook1.JsonFileIO(); break;
+                    case 11:
                         Environment.Exit(0);
                         break;
                 }

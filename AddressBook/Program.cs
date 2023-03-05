@@ -13,7 +13,8 @@
                 Console.WriteLine("4.Count by city or state");
                 Console.WriteLine("5.Sort entries alphbetically");
                 Console.WriteLine("6.Sort entries according to zip,state,city");
-                Console.WriteLine("7.Exit");
+                Console.WriteLine("7.Read or Write Contacts using File IO");
+                AddressBook book= new AddressBook();
                 int choice = Convert.ToInt32(Console.ReadLine());
                 switch (choice)
                 {
@@ -42,9 +43,13 @@
                         AddressBook.SortByCityStateZip();
                         break;
                     case 7:
-                        AddressBook.TextFileIO();
+                       
+                        book.TextFileIO();
                         break;
                     case 8:
+                        book.CSVFileIO();
+                        break;
+                    case 9:
                         Environment.Exit(0);
                         break;
                 }

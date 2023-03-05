@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 using static System.Net.Mime.MediaTypeNames;
+using CsvHelper;
+using System.Globalization;
 
 namespace AddressBook
 {
@@ -22,6 +25,7 @@ namespace AddressBook
 
         public void AddContact()
         {
+
             Console.WriteLine("Enter first name :");
             string firstName = Console.ReadLine();
 
@@ -376,7 +380,7 @@ namespace AddressBook
                     break;
             }
         }
-        public static void TextFileIO()
+        public  void TextFileIO()
         {
             Console.WriteLine("\nDo you want to Read / Write the file?");
             Console.WriteLine("1.Read");
@@ -401,6 +405,35 @@ namespace AddressBook
                     }
                     break;
                     case 2:
+                    this.AddContact();
+                    break;
+            }
+           
+        }
+        public void CSVFileIO()
+        {
+            Console.WriteLine("\nDo you want to Read / Write the file?");
+            Console.WriteLine("1.Read");
+            Console.WriteLine("2.Write");
+            int choice = Convert.ToInt32(Console.ReadLine());
+
+            switch (choice)
+            {
+                case 1:
+                    var reader = new StreamReader("D:\\BridgeLabz_AddressBook\\BridgeLabz-AddressBook\\AddressBook\\EmployeeDetails.csv");
+                    var csvreader = new CsvReader(reader, CultureInfo.InvariantCulture);
+                    var csv = csvreader.GetRecords<Contact>();
+                    foreach (var obj in csv)
+                    {
+                        Console.WriteLine($"Contact \nFirst Name: {obj.firstName}\n Last Name:{obj.lastName}\nAddress:{obj.address} \nCity:{obj.city}\nState:{obj.state}\nZipcode:{obj.zipcode}\nPhone number:{obj.phone}\nEmail:{obj.email}\n\n");
+                    }
+                    reader.Dispose();
+                    csvreader.Dispose();
+                    break;
+
+                case 2:
+                    var writer = new StreamWriter("D:\\BridgeLabz_AddressBook\\BridgeLabz-AddressBook\\AddressBook\\EmployeeDetails.csv");
+                    var csvwriter = new CsvWriter(writer, CultureInfo.InvariantCulture);
                     Console.WriteLine("Enter first name :");
                     string firstName = Console.ReadLine();
 
@@ -426,8 +459,10 @@ namespace AddressBook
                     string email = Console.ReadLine();
 
                     Contact newContact = new Contact(firstName, lastName, address, city, state, pincode, phone, email);
-                    string text = $" \nFirst Name: {newContact.firstName}\n Last Name:{newContact.lastName}\nAdress:{newContact.address}\nCity:{newContact.city}\nState:{newContact.state}\nZipCode:{newContact.zipcode}\nPhone number:{newContact.phone}\nEmail:{newContact.email}\n\n";
-                    File.AppendAllText(file, text, Encoding.UTF8);
+                    addressBook.Add(newContact);
+                    csvwriter.WriteRecords(addressBook);
+                    csvwriter.Dispose();
+                    writer.Dispose();
                     break;
             }
         }

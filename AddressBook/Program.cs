@@ -42,6 +42,9 @@
                         AddressBook.SortByCityStateZip();
                         break;
                     case 7:
+                        AddressBook.TextFileIO();
+                        break;
+                    case 8:
                         Environment.Exit(0);
                         break;
                 }

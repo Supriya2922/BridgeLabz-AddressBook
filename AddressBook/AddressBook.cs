@@ -4,13 +4,16 @@ using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace AddressBook
 {
 
     public class AddressBook
     {
-
+        public static string file = @"D:\BridgeLabz_AddressBook\BridgeLabz-AddressBook\AddressBook\EmployeeDetails.txt";
+      
+        
         //list to create multiple contacts
         public List<Contact> addressBook = new List<Contact>();
         public static Dictionary<string, List<Contact>> addressBookCollection = new Dictionary<string, List<Contact>>();
@@ -48,8 +51,8 @@ namespace AddressBook
             if (!addressBook.Any(contact => contact.Equals(newContact)))
             {
                 addressBook.Add(newContact);
-
-
+                string text = $" \nFirst Name: {newContact.firstName}\n Last Name:{newContact.lastName}\nAdress:{newContact.address}\nCity:{newContact.city}\nState:{newContact.state}\nZipCode:{newContact.zipcode}\nPhone number:{newContact.phone}\nEmail:{newContact.email}\n\n";
+                File.AppendAllText(file, text ,Encoding.UTF8);
             }
             else
             {
@@ -179,9 +182,9 @@ namespace AddressBook
         public static void addMultipleAddressBooks(AddressBook book)
         {
             Console.WriteLine("Enter the name of the Address Book");
-
             string name = Console.ReadLine();
-
+            string text = $"Address Book : {name}";
+            File.AppendAllText(file, text, Encoding.UTF8);
             book.ContactOperations();
             if (!addressBookCollection.ContainsKey(name))
             {
@@ -370,6 +373,61 @@ namespace AddressBook
                     break;
                 case 3:
                     SortByParameter("zip");
+                    break;
+            }
+        }
+        public static void TextFileIO()
+        {
+            Console.WriteLine("\nDo you want to Read / Write the file?");
+            Console.WriteLine("1.Read");
+            Console.WriteLine("2.Write");
+            int choice=Convert.ToInt32(Console.ReadLine());
+           
+            switch (choice)
+            {
+                case 1:
+                    Console.WriteLine("Contents of file are:");
+                    if (File.Exists(file))
+                    {
+                        StreamReader Textfile = new StreamReader(file);
+                        string line;
+                        while ((line = Textfile.ReadLine()) != null)
+                        {
+                            Console.WriteLine(line);
+                        }
+
+                        Textfile.Close();
+
+                    }
+                    break;
+                    case 2:
+                    Console.WriteLine("Enter first name :");
+                    string firstName = Console.ReadLine();
+
+                    Console.WriteLine("Enter last name :");
+                    string lastName = Console.ReadLine();
+
+                    Console.WriteLine("Enter address :");
+                    string address = Console.ReadLine();
+
+                    Console.WriteLine("Enter city :");
+                    string city = Console.ReadLine();
+
+                    Console.WriteLine("Enter state :");
+                    string state = Console.ReadLine();
+
+                    Console.WriteLine("Enter pincode :");
+                    long pincode = Convert.ToInt64(Console.ReadLine());
+
+                    Console.WriteLine("Enter phone number :");
+                    long phone = Convert.ToInt64(Console.ReadLine());
+
+                    Console.WriteLine("Enter email : ");
+                    string email = Console.ReadLine();
+
+                    Contact newContact = new Contact(firstName, lastName, address, city, state, pincode, phone, email);
+                    string text = $" \nFirst Name: {newContact.firstName}\n Last Name:{newContact.lastName}\nAdress:{newContact.address}\nCity:{newContact.city}\nState:{newContact.state}\nZipCode:{newContact.zipcode}\nPhone number:{newContact.phone}\nEmail:{newContact.email}\n\n";
+                    File.AppendAllText(file, text, Encoding.UTF8);
                     break;
             }
         }

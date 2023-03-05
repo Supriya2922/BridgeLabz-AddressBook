@@ -1,0 +1,30 @@
+﻿Address Book : Home 
+First Name: Supriya
+ Last Name:P
+Adress:d
+City:d
+State:d
+ZipCode:3
+Phone number:4
+Email:s
+
+Address Book : Office 
+First Name: Daal
+ Last Name:s
+Adress:d
+City:d
+State:s
+ZipCode:4
+Phone number:5
+Email:s
+
+ 
+First Name: eer
+ Last Name:e
+Adress:e
+City:e
+State:e
+ZipCode:3
+Phone number:4
+Email:d
+

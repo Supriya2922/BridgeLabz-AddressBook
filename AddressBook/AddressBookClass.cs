@@ -337,7 +337,7 @@ namespace AddressBook
             }
             return true;
         }
-        public static void searchPersonAcrossMultipleAddressBooks()
+        public  void searchPersonAcrossMultipleAddressBooks()
         {
             Console.WriteLine("Enter the city to be searched in");
             string searchCity = Console.ReadLine();
@@ -365,7 +365,7 @@ namespace AddressBook
             }
            
         }
-        public static void ViewPersonByStateOrCity()
+        public  void ViewPersonByStateOrCity()
         {
             Console.WriteLine("Select an option(view by state or city)");
             Console.WriteLine("1.View by City");
@@ -436,7 +436,7 @@ namespace AddressBook
 
             
         }
-        public static void CountByCityOrState()
+        public  void CountByCityOrState()
         {
             List<Contact> addressBooks = new List<Contact>();
             foreach (string book in addressBookCollection.Keys)
@@ -460,14 +460,10 @@ namespace AddressBook
               foreach (var group in stateGroup)
               {
                     Console.WriteLine("{0}       {1}", group.Key, group.Count());
-              }
-
-            
-
-           
+              }   
 
         }
-        public static void SortByParameter(string parameter)
+        public static  void SortByParameter(string parameter)
         {
             List<Contact> addressBooks = new List<Contact>();
             foreach (string book in addressBookCollection.Keys)
@@ -525,7 +521,7 @@ namespace AddressBook
                     SortByParameter("city");
                     break;
                 case 2:
-                    SortByParameter("state");
+                  SortByParameter("state");
                     break;
                 case 3:
                     SortByParameter("zip");
@@ -672,7 +668,7 @@ namespace AddressBook
            
            
         }
-        public static bool RetrieveContactFromDataBase(string fname, string lname)
+        public  bool RetrieveContactFromDataBase(string fname, string lname)
         {
           
             SqlConnection sqlConnection = new SqlConnection(connString);
@@ -693,7 +689,7 @@ namespace AddressBook
             return false;
         }
 
-        public static bool RetrieveContactFromDataBaseAddedInParticularDate()
+        public  bool RetrieveContactFromDataBaseAddedInParticularDate()
         {
            
             SqlConnection sqlConnection = new SqlConnection(connString);
@@ -718,7 +714,7 @@ namespace AddressBook
             return false;
         }
 
-        public static void CountOfContactsByCity()
+        public  void CountOfContactsByCity()
         {
             SqlConnection sqlConnection = new SqlConnection(connString);
             SqlCommand cmd = new SqlCommand();
@@ -740,7 +736,8 @@ namespace AddressBook
             }
            
         }
-        public static void CountOfContactsByState()
+
+        public  void CountOfContactsByState()
         {
             SqlConnection sqlConnection = new SqlConnection(connString);
             SqlCommand cmd = new SqlCommand();
@@ -757,6 +754,29 @@ namespace AddressBook
                 foreach (DataRow ro in tb.Rows)
                 {
                     Console.WriteLine($"{ro[0]}   {ro[1]} ");
+                }
+
+            }
+
+        }
+        public  void DisplayContactsFromDatabase()
+        {
+            SqlConnection sqlConnection = new SqlConnection(connString);
+            SqlCommand cmd = new SqlCommand();
+            cmd.Connection = sqlConnection;
+            cmd.CommandText = "select * from Contacts ";
+
+
+            sqlConnection.Open();
+            DataTable tb = new DataTable();
+            SqlDataAdapter da = new SqlDataAdapter(cmd);
+            da.Fill(tb);
+
+            if (tb.Rows.Count > 0)
+            {
+                foreach (DataRow ro in tb.Rows)
+                {
+                    Console.WriteLine($"{ro[1]}  {ro[2]}  {ro[3]}   {ro[4]}  {ro[5]} {ro[6]} {ro[7]} {ro[8]} {ro[9]} {ro[10]} ");
                 }
 
             }

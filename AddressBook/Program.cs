@@ -25,7 +25,8 @@ namespace AddressBook
                 Console.WriteLine("9.Read or Write Contacts using JSON");
                 Console.WriteLine("10.Retrieve Contacts on particular date");
                 Console.WriteLine("11.Retrieve Count of contacts by city or state from database");
-
+                Console.WriteLine("12.Display Contacts from the database");
+                Console.WriteLine("13.Exit");
                 AddressBookClass book= new AddressBookClass();
                 int choice = Convert.ToInt32(Console.ReadLine());
                 switch (choice)
@@ -40,13 +41,13 @@ namespace AddressBook
                         }
                         break;
                     case 2:
-                        AddressBookClass.searchPersonAcrossMultipleAddressBooks();
+                        book.searchPersonAcrossMultipleAddressBooks();
                         break;
                     case 3:
-                        AddressBookClass.ViewPersonByStateOrCity();
+                        book.ViewPersonByStateOrCity();
                         break;
                     case 4:
-                        AddressBookClass.CountByCityOrState();
+                        book.CountByCityOrState();
                         break;
                     case 5:
                         AddressBookClass.SortByName();
@@ -62,17 +63,20 @@ namespace AddressBook
                         book.CSVFileIO();
                         break;
                     case 9:
-                        AddressBookClass addressBook1 = new AddressBookClass();
-                        addressBook1.JsonFileIO(); break;
+                        
+                       book.JsonFileIO(); break;
                     case 10:
-                        AddressBookClass.RetrieveContactFromDataBaseAddedInParticularDate();
+                        book.RetrieveContactFromDataBaseAddedInParticularDate();
                         
                         break;
                     case 11:
-                        AddressBookClass.CountOfContactsByCity();
-                        AddressBookClass.CountOfContactsByState();
+                        book.CountOfContactsByCity();
+                        book.CountOfContactsByState();
                         break;
                     case 12:
+                        book.DisplayContactsFromDatabase();
+                        break;
+                    case 13:
                         Environment.Exit(0);
                         break;
                 }

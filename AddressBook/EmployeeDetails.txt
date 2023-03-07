@@ -40,3 +40,93 @@ ZipCode:3345
 Phone number:3344
 Email:ss@gmail.com
 
+Address Book : Home 
+First Name: george
+ Last Name:f
+Adress:d
+City:f
+State:f
+ZipCode:4
+Phone number:5
+Email:r
+
+ 
+First Name: Quazi
+ Last Name:Jollu
+Adress:fff
+City:Mysore
+State:Karnataka
+ZipCode:567745
+Phone number:37788737
+Email:dsdsd
+
+Address Book : Home 
+First Name: Banu
+ Last Name:Priya
+Adress:dd
+City:Hampi
+State:Karnataka
+ZipCode:443434
+Phone number:344353455
+Email:fdfd@gmail.com
+
+ 
+First Name: Chottu
+ Last Name:Mottu
+Adress:dd
+City:Jaynagar
+State:Tamil Nadu
+ZipCode:5456
+Phone number:435445
+Email:gg@gmail.com
+
+Address Book : College 
+First Name: Harish
+ Last Name:Jain
+Adress:dd
+City:Mysore
+State:Bangalore
+ZipCode:3445
+Phone number:76767
+Email:fgj
+
+Address Book : Home 
+First Name: Kalia
+ Last Name:Bheem
+Adress:s
+City:Hampi
+State:Karnataka
+ZipCode:560008
+Phone number:3333
+Email:ff@gmail.com
+
+ 
+First Name: Londi
+ Last Name:K
+Adress:ss
+City:Chennai
+State:Tamil Nadu
+ZipCode:4444
+Phone number:3343
+Email:f
+
+Address Book : Office 
+First Name: Haley
+ Last Name:Bond
+Adress:dd
+City:Mysore
+State:Karnataka
+ZipCode:5677
+Phone number:444
+Email:d
+
+ 
+First Name: Fandi
+ Last Name:Mandi
+Adress:sss
+City:Mangaluru
+State:Karnataka
+ZipCode:555
+Phone number:4444
+Email:ff
+

@@ -711,14 +711,57 @@ namespace AddressBook
             {
                 foreach (DataRow ro in tb.Rows)
                 {
-                    Console.WriteLine($"{ro[0]}  {ro[1]}  {ro[2]}  {ro[3]}   {ro[4]}  {ro[5]} {ro[6]} {ro[7]} {ro[8]} {ro[9]}  ");
+                    Console.WriteLine($"{ro[0]}  {ro[1]}  {ro[2]}  {ro[3]}   {ro[4]}  {ro[5]} {ro[6]} {ro[7]} {ro[8]} {ro[9]} {ro[10]} ");
                 }
                 return true;
             }
             return false;
         }
 
+        public static void CountOfContactsByCity()
+        {
+            SqlConnection sqlConnection = new SqlConnection(connString);
+            SqlCommand cmd = new SqlCommand();
+            cmd.Connection = sqlConnection;
+            cmd.CommandText = "select city,count(*) as CountOfContacts from Contacts group by city ";
 
+            sqlConnection.Open();
+            DataTable tb = new DataTable();
+            SqlDataAdapter da = new SqlDataAdapter(cmd);
+            da.Fill(tb);
+            Console.WriteLine("\nCity\tCount Of Contacts");
+            if (tb.Rows.Count > 0)
+            {
+                foreach (DataRow ro in tb.Rows)
+                {
+                    Console.WriteLine($"{ro[0]}   {ro[1]} ");
+                }
+               
+            }
+           
+        }
+        public static void CountOfContactsByState()
+        {
+            SqlConnection sqlConnection = new SqlConnection(connString);
+            SqlCommand cmd = new SqlCommand();
+            cmd.Connection = sqlConnection;
+            cmd.CommandText = "select State,count(*) as CountOfContacts from Contacts group by State;";
+
+            sqlConnection.Open();
+            DataTable tb = new DataTable();
+            SqlDataAdapter da = new SqlDataAdapter(cmd);
+            da.Fill(tb);
+            Console.WriteLine("\nSate\tCount Of Contacts");
+            if (tb.Rows.Count > 0)
+            {
+                foreach (DataRow ro in tb.Rows)
+                {
+                    Console.WriteLine($"{ro[0]}   {ro[1]} ");
+                }
+
+            }
+
+        }
     }
 }
         

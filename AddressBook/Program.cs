@@ -23,7 +23,9 @@ namespace AddressBook
                 Console.WriteLine("7.Read or Write Contacts using File IO");
                 Console.WriteLine("8.Read or Write Contacts using CSV Helper");
                 Console.WriteLine("9.Read or Write Contacts using JSON");
-                Console.WriteLine("10.Update Contacts in database");
+                Console.WriteLine("10.Retrieve Contacts on particular date");
+                Console.WriteLine("11.Retrieve Count of contacts by city or state from database");
+
                 AddressBookClass book= new AddressBookClass();
                 int choice = Convert.ToInt32(Console.ReadLine());
                 switch (choice)
@@ -63,10 +65,14 @@ namespace AddressBook
                         AddressBookClass addressBook1 = new AddressBookClass();
                         addressBook1.JsonFileIO(); break;
                     case 10:
-                        bool res=AddressBookClass.RetrieveContactFromDataBaseAddedInParticularDate();
-                        Console.Write(res);
+                        AddressBookClass.RetrieveContactFromDataBaseAddedInParticularDate();
+                        
                         break;
                     case 11:
+                        AddressBookClass.CountOfContactsByCity();
+                        AddressBookClass.CountOfContactsByState();
+                        break;
+                    case 12:
                         Environment.Exit(0);
                         break;
                 }

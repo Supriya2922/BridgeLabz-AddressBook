@@ -62,7 +62,10 @@ namespace AddressBook
                     case 9:
                         AddressBookClass addressBook1 = new AddressBookClass();
                         addressBook1.JsonFileIO(); break;
-                       
+                    case 10:
+                        bool res=AddressBookClass.RetrieveContactFromDataBaseAddedInParticularDate();
+                        Console.Write(res);
+                        break;
                     case 11:
                         Environment.Exit(0);
                         break;

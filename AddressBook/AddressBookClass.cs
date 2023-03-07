@@ -204,10 +204,27 @@ namespace AddressBook
                     else
                         Console.WriteLine("Contact was not updated ");
                 }
-                
-                    
-                   
+
+              
+                foreach (string book in addressBookCollection.Keys)
+                {
+                    var contacts = addressBookCollection[book];
+                    foreach (var c in contacts)
+                    {
+                       
+                            foreach(var con in addressBook)
+                            {
+                            if (c.firstName == firstname && c.lastName == lastname && con.firstName == firstname && con.lastName == lastname)
+                            {
+                                addressBookCollection[book].Add(con);
+                            }
+                            
+                            }
+                    }
+
                 }
+
+            }
                
             
            
@@ -676,9 +693,32 @@ namespace AddressBook
             return false;
         }
 
-   
+        public static bool RetrieveContactFromDataBaseAddedInParticularDate()
+        {
+           
+            SqlConnection sqlConnection = new SqlConnection(connString);
+            SqlCommand cmd = new SqlCommand();
+            cmd.Connection = sqlConnection;
+            cmd.CommandText = "select * from Contacts where Created_at=CAST(GETDATE() AS DATE) ";
 
-       
+
+            sqlConnection.Open();
+            DataTable tb = new DataTable();
+            SqlDataAdapter da = new SqlDataAdapter(cmd);
+            da.Fill(tb);
+
+            if (tb.Rows.Count > 0)
+            {
+                foreach (DataRow ro in tb.Rows)
+                {
+                    Console.WriteLine($"{ro[0]}  {ro[1]}  {ro[2]}  {ro[3]}   {ro[4]}  {ro[5]} {ro[6]} {ro[7]} {ro[8]} {ro[9]}  ");
+                }
+                return true;
+            }
+            return false;
+        }
+
+
     }
 }
         

@@ -2,13 +2,17 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Security.Cryptography.X509Certificates;
+
 using System.Text;
-using System.Threading.Tasks;
-using static System.Net.Mime.MediaTypeNames;
+
 using CsvHelper;
 using System.Globalization;
 using Newtonsoft.Json;
+using System.Configuration;
+using System.Data;
+using System.Data.SqlClient;
+
+
 
 namespace AddressBook
 {
@@ -17,31 +21,53 @@ namespace AddressBook
     {
         public static string file = @"D:\BridgeLabz_AddressBook\BridgeLabz-AddressBook\AddressBook\EmployeeDetails.txt";
       
-        
         //list to create multiple contacts
         public List<Contact> addressBook = new List<Contact>();
         public static Dictionary<string, List<Contact>> addressBookCollection = new Dictionary<string, List<Contact>>();
         public static Dictionary<string, List<Contact>> cityDict = new Dictionary<string, List<Contact>>();
         public static Dictionary<string, List<Contact>> stateDict = new Dictionary<string, List<Contact>>();
-
-        public  bool AddContactTest(Contact newContact)
+        public static string connString = ConfigurationManager.ConnectionStrings["DbConn"].ConnectionString;
+        public  bool AddContactTest(Contact newContact,string name="Home")
         {
+
+          //  string connectionString = "Data Source=SUPRIYA-ENG;Initial Catalog=AddressBookSystem;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
+            SqlConnection sqlConnection = new SqlConnection(connString);
+        SqlCommand cmd = new SqlCommand();
+            cmd.Connection = sqlConnection;
+            sqlConnection.Open();
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.CommandText = "spAddContact";
+           
             if (!addressBook.Any(contact => contact.Equals(newContact)))
             {
                 addressBook.Add(newContact);
-               
+               cmd.Parameters.Add(new SqlParameter("@fname", newContact.firstName));
+                cmd.Parameters.Add(new SqlParameter("@lname", newContact.lastName));
+                cmd.Parameters.Add(new SqlParameter("@address", newContact.address));
+                cmd.Parameters.Add(new SqlParameter("@city", newContact.city));
+                cmd.Parameters.Add(new SqlParameter("@state", newContact.state));
+                cmd.Parameters.Add(new SqlParameter("@zipcode", newContact.zipcode));
+                cmd.Parameters.Add(new SqlParameter("@phone", newContact.phone));
+                cmd.Parameters.Add(new SqlParameter("@email", newContact.email));
+                cmd.Parameters.Add(new SqlParameter("@category", name));
+                int rows = cmd.ExecuteNonQuery();
+                sqlConnection.Close();
                 return true;
-
             }
             else
             {
                 Console.WriteLine("Contact already exists with the same name");
             }
+            
             return false;
         }
-        public void AddContact()
+        public void AddContact(string addressbookname)
         {
+            
+            SqlConnection sqlConnection = new SqlConnection(connString);
+            SqlCommand cmd = new SqlCommand();
 
+            cmd.Connection = sqlConnection;
             Console.WriteLine("Enter first name :");
             string firstName = Console.ReadLine();
 
@@ -68,18 +94,34 @@ namespace AddressBook
 
             Contact newContact = new Contact(firstName, lastName, address, city, state, pincode, phone, email);
 
+            sqlConnection.Open();
+           
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.CommandText = "spAddContact";
+            cmd.Parameters.Add(new SqlParameter("@fname", firstName));
+            cmd.Parameters.Add(new SqlParameter("@lname", lastName));
+            cmd.Parameters.Add(new SqlParameter("@address", address));
+            cmd.Parameters.Add(new SqlParameter("@city", city));
+            cmd.Parameters.Add(new SqlParameter("@state", state));
+            cmd.Parameters.Add(new SqlParameter("@zipcode", pincode));
+            cmd.Parameters.Add(new SqlParameter("@phone", phone));
+            cmd.Parameters.Add(new SqlParameter("@email", email));
+            cmd.Parameters.Add(new SqlParameter("@category", addressbookname));
+            //@fname,@lname,@address,@city,@state,@zipcode,@phone,@email,@category
+
             if (!addressBook.Any(contact => contact.Equals(newContact)))
             {
                 addressBook.Add(newContact);
                 string text = $" \nFirst Name: {newContact.firstName}\n Last Name:{newContact.lastName}\nAdress:{newContact.address}\nCity:{newContact.city}\nState:{newContact.state}\nZipCode:{newContact.zipcode}\nPhone number:{newContact.phone}\nEmail:{newContact.email}\n\n";
                 File.AppendAllText(file, text ,Encoding.UTF8);
-                
+                int rows = cmd.ExecuteNonQuery();
+
             }
             else
             {
                 Console.WriteLine("Contact already exists with the same name");
             }
-            
+            sqlConnection.Close();
         }
 
         public void displayContacts()
@@ -111,24 +153,22 @@ namespace AddressBook
         public void EditContact(string firstname, string lastname)
         {
 
+            SqlConnection sqlConnection = new SqlConnection(connString);
+            SqlCommand cmd = new SqlCommand();
+
+            cmd.Connection = sqlConnection;
 
             foreach (Contact contact in addressBook)
             {
                 if (contact.firstName == firstname && contact.lastName == lastname)
                 {
-                    Console.WriteLine("Choose a field which you want to edit");
-                    Console.WriteLine("1.Name \n2.Address \n3.Phone Number \n4.Email");
-                    int editField = Convert.ToInt32(Console.ReadLine());
-                    switch (editField)
-                    {
-                        case 1:
+
                             Console.WriteLine("Enter first name :");
                             contact.firstName = Console.ReadLine();
 
                             Console.WriteLine("Enter last name :");
                             contact.lastName = Console.ReadLine();
-                            break;
-                        case 2:
+
                             Console.WriteLine("Enter address :");
                             contact.address = Console.ReadLine();
                             Console.WriteLine("Enter city :");
@@ -137,34 +177,59 @@ namespace AddressBook
                             contact.state = Console.ReadLine();
                             Console.WriteLine("Enter pincode :");
                             contact.zipcode = Convert.ToInt64(Console.ReadLine());
-                            break;
-                        case 3:
+
                             Console.WriteLine("Enter updated Phone number :");
                             contact.phone = Convert.ToInt64(Console.ReadLine());
-                            break;
-                        case 4:
+
                             Console.WriteLine("Enter new email id :");
                             contact.email = Console.ReadLine();
-                            break;
+                    sqlConnection.Open();
 
-
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.CommandText = "spUpdateContact";
+                    cmd.Parameters.Add(new SqlParameter("@fname", contact.firstName));
+                    cmd.Parameters.Add(new SqlParameter("@lname", contact.lastName));
+                    cmd.Parameters.Add(new SqlParameter("@address", contact.address));
+                    cmd.Parameters.Add(new SqlParameter("@city", contact.city));
+                    cmd.Parameters.Add(new SqlParameter("@state", contact.state));
+                    cmd.Parameters.Add(new SqlParameter("@zipcode",contact.zipcode));
+                    cmd.Parameters.Add(new SqlParameter("@phone", contact.phone));
+                    cmd.Parameters.Add(new SqlParameter("@email", contact.email));
+                    int rows = cmd.ExecuteNonQuery();
+                    sqlConnection.Close();
+                    if(rows>0)
+                    {
+                        Console.WriteLine("Contact updated successfully");
                     }
-                    Console.WriteLine("Contact updated successfully!");
+                    else
+                        Console.WriteLine("Contact was not updated ");
+                }
+                
+                    
                    
                 }
                
-            }
+            
            
         }
         public bool DeleteContact(string firstname, string lastname)
         {
 
+            SqlConnection sqlConnection = new SqlConnection(connString);
+            SqlCommand cmd = new SqlCommand();
+            cmd.Connection = sqlConnection;
+            cmd.CommandText = "delete from Contacts where FirstName=@fname and LastName=@lname";
+            cmd.Parameters.AddWithValue("@fname", firstname);
+            cmd.Parameters.AddWithValue("@lname", lastname);
+            sqlConnection.Open();
             foreach (Contact contact in addressBook)
             {
                 if (contact.firstName.ToLower() == firstname.ToLower() && contact.lastName.ToLower() == lastname.ToLower())
                 {
                     addressBook.Remove(contact);
                     Console.WriteLine("Deleted successfully");
+                    int r = cmd.ExecuteNonQuery();
+                    sqlConnection.Close();
                     return true;
                 }
                 else
@@ -175,7 +240,7 @@ namespace AddressBook
             return false;
 
         }
-        public void ContactOperations()
+        public void ContactOperations(string name)
         {
             Console.WriteLine("\nSelect an option");
             Console.WriteLine("1.Add Contact");
@@ -189,26 +254,26 @@ namespace AddressBook
             {
                 case 1:
 
-                    this.AddContact();
-                    ContactOperations();
+                    this.AddContact(name);
+                    ContactOperations(name);
                     break;
                 case 2:
                     Console.WriteLine("Enter the first name and last name of the contact to edit");
                     string firstname = Console.ReadLine();
                     string lastname = Console.ReadLine();
                     this.EditContact(firstname, lastname);
-                    this.ContactOperations();
+                    this.ContactOperations(name);
                     break;
                 case 3:
                     Console.WriteLine("Enter the first name and last name of the contact to delete");
                     string fname = Console.ReadLine();
                     string lname = Console.ReadLine();
                     this.DeleteContact(fname, lname);
-                    this.ContactOperations();
+                    this.ContactOperations(name);
                     break;
                 case 4:
                     this.displayContacts();
-                    this.ContactOperations();
+                    this.ContactOperations(name);
                     break;
                 default:
                     break;
@@ -221,7 +286,7 @@ namespace AddressBook
             string name = Console.ReadLine();
             string text = $"Address Book : {name}";
             File.AppendAllText(file, text, Encoding.UTF8);
-            book.ContactOperations();
+            book.ContactOperations(name);
             if (!addressBookCollection.ContainsKey(name))
             {
                 addressBookCollection.Add(name, book.addressBook);
@@ -476,7 +541,8 @@ namespace AddressBook
                   
                     break;
                     case 2:
-                    this.AddContact();
+                    
+                    this.AddContact("Office");
                     break;
             }
            
@@ -572,7 +638,7 @@ namespace AddressBook
                     Console.WriteLine("Enter name of the address book:");
                     string name=Console.ReadLine();
                     string fileloc = "D:\\BridgeLabz_AddressBook\\BridgeLabz-AddressBook\\AddressBook\\EmployeeDetails.json";
-                    this.AddContact();
+                    this.AddContact(name);
                     if (addressBookCollection.ContainsKey(name))
                     {
 
@@ -589,6 +655,30 @@ namespace AddressBook
            
            
         }
+        public static bool RetrieveContactFromDataBase(string fname, string lname)
+        {
+          
+            SqlConnection sqlConnection = new SqlConnection(connString);
+            SqlCommand cmd = new SqlCommand();
+            cmd.Connection = sqlConnection;
+            cmd.CommandText = "select * from Contacts where FirstName=@fname and LastName=@lname";
+            cmd.Parameters.AddWithValue("@fname", fname);
+            cmd.Parameters.AddWithValue("@lname", lname);
+            sqlConnection.Open();
+            DataTable tb = new DataTable();
+            SqlDataAdapter da = new SqlDataAdapter(cmd);
+            da.Fill(tb);
+
+            if (tb.Rows.Count > 0)
+            {
+                return true;
+            }
+            return false;
+        }
+
+   
+
+       
     }
 }
         

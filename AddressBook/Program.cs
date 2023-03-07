@@ -7,13 +7,10 @@ namespace AddressBook
     {
         static void Main(string[] args)
         {
-            String connString;
-            connString = ConfigurationManager.ConnectionStrings["DbConn"].ConnectionString;
-            SqlConnection sqlConnection = new SqlConnection(connString);
+          
+          
             //Command object
-            SqlCommand cmd = new SqlCommand();
-
-            cmd.Connection = sqlConnection;
+            
             while (true)
             {
                 Console.WriteLine("\nSelect option:");
@@ -26,6 +23,7 @@ namespace AddressBook
                 Console.WriteLine("7.Read or Write Contacts using File IO");
                 Console.WriteLine("8.Read or Write Contacts using CSV Helper");
                 Console.WriteLine("9.Read or Write Contacts using JSON");
+                Console.WriteLine("10.Update Contacts in database");
                 AddressBookClass book= new AddressBookClass();
                 int choice = Convert.ToInt32(Console.ReadLine());
                 switch (choice)
@@ -64,6 +62,7 @@ namespace AddressBook
                     case 9:
                         AddressBookClass addressBook1 = new AddressBookClass();
                         addressBook1.JsonFileIO(); break;
+                       
                     case 11:
                         Environment.Exit(0);
                         break;
